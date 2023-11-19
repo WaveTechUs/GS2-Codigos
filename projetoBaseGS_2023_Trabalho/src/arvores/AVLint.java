@@ -1,5 +1,7 @@
 package arvores;
 
+import cidades.Cidade;
+
 public class AVLint {
 
 	private class ARVORE {
@@ -9,6 +11,7 @@ public class AVLint {
 	}
 
 	public ARVORE root = null;
+	public int contaComparacao =0;
 
 	public ARVORE removeValor(ARVORE p, int info) {
 		if (p != null) {
@@ -68,20 +71,21 @@ public class AVLint {
 			p.hDir = 0;
 			p.hEsq = 0;
 		} else if (p.dado > info) {
+			contaComparacao++;
 			p.esq = inserirAVL(p.esq, info);
 			if (p.esq.hDir > p.esq.hEsq) // Altura do n� ser� a maior
 				p.hEsq = p.esq.hDir + 1; // altura dos seus filhos
 			else
 				p.hEsq = p.esq.hEsq + 1;
-
 		} else {
+			contaComparacao++;
 			p.dir = inserirAVL(p.dir, info);
 			if (p.dir.hDir > p.dir.hEsq)
 				p.hDir = p.dir.hDir + 1;
 			else
 				p.hDir = p.dir.hEsq + 1;
-
 		}
+
 		p = balanceamento(p);
 		return p;
 	}
@@ -205,5 +209,23 @@ public class AVLint {
 				cont = contaNos(p.dir, cont);
 		}
 		return cont;
+	}
+	
+	public ARVORE inserirABB(ARVORE p, int info) {
+		// insere elemento em uma ABB
+		if (p == null) {
+			p = new ARVORE();
+			p.dado = info;
+			p.esq = null;
+			p.dir = null;
+		} else if (info < p.dado) {
+			contaComparacao++;
+			p.esq = inserirABB(p.esq, info);
+		}
+		else {
+			contaComparacao++;
+			p.dir = inserirABB(p.dir, info);
+		}
+		return p;
 	}
 }

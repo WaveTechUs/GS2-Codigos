@@ -3,6 +3,7 @@ package aplicacao;
 import java.util.Stack;
 
 import arvores.AVLCidade;
+import arvores.AVLCidade.ARVORE;
 import cidades.Cidade;
 
 public class Vacinacao {
@@ -31,12 +32,11 @@ public class Vacinacao {
 			}
 			avlCidade.mostra(avlCidade.rootAVL);
 
-			
 			System.out.println("\n\n===========VETOR=========");
-			Stack<Cidade> a = avlCidade.gerarLista(avlCidade.rootAVL);
-			ordernaLista(a);
-			for(int j = 0; j<a.size(); j++) {
-				System.out.println("Cidade: "+ a.get(j).getNome() + " Porcentagem Vacina:" + a.get(j).getVacina() + "%") ;
+			Cidade[] a = avlCidade.gerarLista(avlCidade.rootAVL);
+			quicksort(a, 0, a.length-1);
+			for(int j = 0; j<a.length; j++) {
+				System.out.println("Cidade: "+ a[j].getNome() + " Porcentagem Vacina:" + a[j].getVacina() + "%") ;
 			}
 			
 			
@@ -46,17 +46,6 @@ public class Vacinacao {
 			
 		}
 	
-	public static void ordernaLista(Stack<Cidade> lista) {
-		Cidade[] array = lista.toArray(new Cidade[lista.size()]);
-		
-		quicksort(array, 0,array.length-1);
-		
-		lista.clear();// Limpa o Stack para poder adicionar em ordem crescente
-		
-		for(Cidade cidade : array) {
-			lista.push(cidade);
-		}
-	}
 	public static void quicksort(Cidade x[],int li,int ls)
 	{
 		int j;
@@ -75,10 +64,10 @@ public class Vacinacao {
 		abaixo=li;
 		while(abaixo<acima)
 		{
-			while(x[abaixo].comparteTo(pivo) < 0 && abaixo<ls) {
+			while(x[abaixo].getVacina() < pivo.getVacina() && abaixo<ls) {
 				abaixo++;
 			}
-			while (x[acima].comparteTo(pivo)>=0 && acima > abaixo) {
+			while (x[acima].getVacina() >= pivo.getVacina() && acima > abaixo) {
 				acima--;
 			}
 			if (abaixo<acima){
