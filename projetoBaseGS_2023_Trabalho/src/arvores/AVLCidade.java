@@ -44,6 +44,33 @@ public class AVLCidade {
 			return p;
 		}
 		
+		public ARVORE inserirABB(ARVORE p, String cNome, int cNumCasos, double cCoberturaVacina) {
+			if(p == null) {
+				p = new ARVORE();
+				p.cidade = new Cidade(cNome, cNumCasos, cCoberturaVacina);
+				p.esq= null;
+				p.dir = null;
+				p.hDir = 0;
+				p.hEsq = 0;
+			}else if (p.cidade.getVacina() > cCoberturaVacina){
+				p.esq =inserirABB(p.esq, cNome, cNumCasos, cCoberturaVacina);
+				if(p.esq.hDir> p.esq.hEsq)
+					p.hEsq = p.esq.hDir +1;
+				else
+					p.hEsq = p.esq.hEsq +1;
+			}
+			else {
+				p.dir = inserirABB(p.dir, cNome, cNumCasos, cCoberturaVacina);
+				if(p.dir.hDir > p.dir.hEsq)
+					p.hDir = p.dir.hDir +1;
+				else
+					p.hDir = p.dir.hEsq +1;
+			}
+			p = balanceamento(p);
+			
+			return p;
+		}
+		
 		public ARVORE balanceamento(ARVORE p) {
 			int FB = p.hDir - p.hEsq;
 			if( FB >1) {
@@ -127,7 +154,7 @@ public class AVLCidade {
 		public void gerarABB( ARVORE pAVL) {
 			Stack <ARVORE> sArray = gerarListaArvore(pAVL);
 			for(int i =0; i< sArray.size(); i++) {
-				rootABB = inserirAVL(rootABB, sArray.get(i).cidade.getNome(), sArray.get(i).cidade.getCasos(), sArray.get(i).cidade.getVacina());
+				rootABB = inserirABB(rootABB, sArray.get(i).cidade.getNome(), sArray.get(i).cidade.getCasos(), sArray.get(i).cidade.getVacina());
 			}
 		}
 		
@@ -146,4 +173,5 @@ public class AVLCidade {
 				lista.push(p);
 			gerarListaHelperArvore(p.dir, lista);
 		}
+		
 }
